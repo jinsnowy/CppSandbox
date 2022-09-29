@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{ba935916-bac7-40e7-923e-4e4700d2c217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RaftConsensus">
+      <UniqueIdentifier>{1f030fde-f4b8-4bc7-86d4-9d99302f6e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{310001fc-8b81-4570-ab11-f17af071fafd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RaftConsensus\HeartbeatModule.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftConsensus.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftMessage.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftMessageProcessor.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftRouter.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftState.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftTester.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="RaftConsensus\RaftVisualizer.h">
+      <Filter>RaftConsensus</Filter>
+    </ClInclude>
+    <ClInclude Include="Format.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RaftConsensus\HeartbeatModule.cpp">
+      <Filter>RaftConsensus</Filter>
+    </ClCompile>
+    <ClCompile Include="RaftConsensus\RaftMessageProcessor.cpp">
+      <Filter>RaftConsensus</Filter>
+    </ClCompile>
+    <ClCompile Include="RaftConsensus\RaftRouter.cpp">
+      <Filter>RaftConsensus</Filter>
+    </ClCompile>
+    <ClCompile Include="RaftConsensus\RaftVisualizer.cpp">
+      <Filter>RaftConsensus</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
