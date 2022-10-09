@@ -117,6 +117,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="doctest.h" />
     <ClInclude Include="Format.h" />
     <ClInclude Include="RaftConsensus\HeartbeatModule.h" />
     <ClInclude Include="RaftConsensus\RaftConsensus.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="RaftConsensus\RaftTester.h" />
     <ClInclude Include="RaftConsensus\RaftVisualizer.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="TicTacToe\practice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

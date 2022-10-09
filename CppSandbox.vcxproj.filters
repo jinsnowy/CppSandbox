@@ -10,6 +10,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{310001fc-8b81-4570-ab11-f17af071fafd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TicTacToe">
+      <UniqueIdentifier>{2bfc3485-9786-4661-a50c-3b0e730de422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RaftConsensus\HeartbeatModule.h">
@@ -40,6 +43,12 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TicTacToe\practice.h">
+      <Filter>TicTacToe</Filter>
+    </ClInclude>
+    <ClInclude Include="doctest.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

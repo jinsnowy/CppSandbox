@@ -1,8 +1,10 @@
 #include "RaftConsensus/RaftTester.h"
+#include "TicTacToe\practice.h"
 
-int main() {
-	raft::RaftTester tester;
-	tester.test();
+int main(int argc, char** argv) {
 
-	return 0;
+
+
+
+	return tictactoe::test(argc, argv);
 }
