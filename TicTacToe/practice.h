@@ -600,6 +600,34 @@ namespace tictactoe {
 		using Board = vector<Line>;
 		using Lines = vector<Line>;
 
+		auto lineCoordinates = [](const auto board, auto lineIndex) {
+			vector<int> range{ 0, 1, 2 };
+			return transformAll<vector<Coordinate>>(range, [lineIndex](auto index) {
+				return make_pair(lineIndex, index);
+				});
+		};
+
+		auto columnCoordinates = [](const auto& board, const auto columnIndex) {
+			auto range = toRange(board);
+			return transformAll<vector<Coordinate>>(range, [columnIndex](const auto index) {
+				return make_pair(index, columnIndex);
+				});
+		};
+
+		auto line = [](auto board, int lineIndex) {
+			return projectCoordinates(board, lineCoordinates(board, lineIndex));
+		};	
+
+		auto column = [](auto board, auto columnIndex) {
+			return projectCoordinates(board, columnCoordinates(board, columnIndex));
+		};
+
+		auto toRange = [](auto const collection) {
+			vector<int> range(collection.size());
+			iota(begin(range), end(range), 0);
+			return range;
+		};
+
 		auto allLines = [](auto board) {
 			auto range = toRange(board);
 			return transformAll<Lines>(range, [board](auto index) {
@@ -612,6 +640,37 @@ namespace tictactoe {
 			return transformAll<Lines>(range, [board](auto index) {
 				return column(board, index);
 				});
+		};
+
+		auto mainDiagonalCoordinates = [](const auto board) {
+			auto range = toRange(board);
+			return transformAll<vector<Coordinate>>(range, [](auto index) {
+				return make_pair(index, index);
+				});
+		};
+
+		auto accessAtCoordinates = [](const auto& board, const Coordinate& coordinate) {
+			return board[coordinate.first][coordinate.second];
+		};
+
+		auto projectCoordinates = [](const auto& board, const auto& coordinates) {
+			auto boardElementFromCoordinates = bind(accessAtCoordinates, board, _1);
+			return transformAll<Line>(coordinates, boardElementFromCoordinates);
+		};
+
+		auto mainDiagonal = [](const auto board) {
+			return projectCoordinates(board, mainDiagonalCoordinates(board));
+		};
+
+		auto secondaryDiagonalCoordinates = [](const auto board) {
+			auto range = toRange(board);
+			return transformAll<vector<Coordinate>>(range, [board](auto index) {
+				return make_pair(index, board.size() - index - 1);
+				});
+		};
+
+		auto secondaryDiagonal = [](const auto board) {
+			return projectCoordinates(board, secondaryDiagonalCoordinates(board));
 		};
 
 		auto allDiagonals = [](auto board) -> Lines {
@@ -848,6 +907,176 @@ namespace tictactoe {
 			});
 
 			return resultForfirstRuleThatApplies(rules);
+		}
+	
+		auto bindAllToBoard = [](const auto& board) {
+			return map<string, function<Lines()>>{
+				{
+					"allLinesColumnsAndDiagonals",
+					bind(allLinesColumnsAndDiagonals, board)
+				},
+			};
+		};
+
+		TEST_CASE("all lines, columns and diagonals with class-like structure") {
+			Board board{
+				{'X', 'X', 'X'},
+				{' ', 'O', ' '},
+				{' ', ' ', 'O'}
+			};
+
+			Lines expected{
+				{'X', 'X', 'X'},
+				{' ', 'O', ' '},
+				{' ', ' ', 'O'},
+				{'X', ' ', ' '},
+				{'X', 'O', ' '},
+				{'X', ' ', 'O'},
+				{'X', 'O', 'O'},
+				{'X', 'O', ' '}
+			};
+
+			auto boardObject = bindAllToBoard(board);
+			auto all = boardObject["allLinesColumnsAndDiagonals"]();
+			CHECK_EQ(expected, all);
+		}
+
+		class BoardResult {
+		private:
+			const vector<Line> board;
+		public:
+			BoardResult(const vector<Line>& board) : board(board) {
+			}
+
+			Lines allLinesColumnsAndDiagonals() const {
+				return concatenate3(allLines(board), allColumns(board), allDiagonals(board));
+			}
+		};
+
+		TEST_CASE("all lines, columns and diagonals") {
+			BoardResult boardResult{ {
+				{'X', 'X', 'X'},
+				{' ', 'O', ' '},
+				{' ', ' ', 'O'}
+			} };
+
+			Lines expected{
+				{'X', 'X', 'X'},
+				{' ', 'O', ' '},
+				{' ', ' ', 'O'},
+				{'X', ' ', ' '},
+				{'X', 'O', ' '},
+				{'X', ' ', 'O'},
+				{'X', 'O', 'O'},
+				{'X', 'O', ' '}
+			};
+
+			auto all = boardResult.allLinesColumnsAndDiagonals();
+			CHECK_EQ(expected, all);
+		}
+
+		class Calculator {
+		private:
+			int first;
+			int second;
+
+		public:
+			Calculator(int first, int second) : first(first), second(second) {
+			}
+
+			int add() const {
+				return first + second;
+			}
+
+			int multiply() const {
+				return first * second;
+			}
+			
+			int mod() const {
+				return first % second;
+			}
+		};
+
+		TEST_CASE("Adds") {
+			Calculator calculator(1, 2);
+
+			int result = calculator.add();
+
+			CHECK_EQ(result, 3);
+		}
+
+		TEST_CASE("Multiplies") {
+			Calculator  calculator(3, 2);
+			
+			int result = calculator.multiply();
+
+			CHECK_EQ(result, 6);
+		}
+
+		TEST_CASE("Modulo") {
+			Calculator calculator(3, 2);
+
+			int result = calculator.mod();
+
+			CHECK_EQ(result, 1);
+		}
+
+		auto add = [](const auto first, const auto second) {
+			return first + second;
+		};
+
+		auto multiply = [](const auto first, const auto second) {
+			return first * second;
+		};
+
+		auto mod = [](const auto first, const auto second) {
+			return first % second;
+		};
+
+		auto revert = [](const auto value) {
+			return -value;
+		};
+
+		auto initialize = [](const auto first, const auto second) -> map<string, function<int()>>
+		{
+			return {
+				{"add", bind(add, first, second)},
+				{"multiply", bind(multiply, first, second)},
+				{"mod", bind(mod, first, second)},
+				{"revert", bind(revert, first)}
+			};
+		};
+
+		TEST_CASE("Adds") {
+			auto calculator = initialize(1, 2);
+
+			int result = calculator["add"]();
+
+			CHECK_EQ(result, 3);
+		}
+		
+		TEST_CASE("Multiplies") {
+			auto calculator = initialize(3, 2);
+
+			int result = calculator["multiply"]();
+
+			CHECK_EQ(result, 6);
+		}
+
+		TEST_CASE("Modulo") {
+			auto calculator = initialize(3, 2);
+
+			int result = calculator["mod"]();
+
+			CHECK_EQ(result, 1);
+		}
+
+		TEST_CASE("Revert") {
+			auto calculator = initialize(3, 2);
+
+			int result = calculator["revert"]();
+
+			CHECK_EQ(result, -3);
 		}
 	}
 }
